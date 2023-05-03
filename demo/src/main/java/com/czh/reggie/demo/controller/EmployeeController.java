@@ -89,11 +89,11 @@ public class EmployeeController {
     public R<String> save(HttpServletRequest request,@RequestBody Employee employee){
         log.info("Saving employee+{}",employee);
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+        //employee.setCreateTime(LocalDateTime.now());
+        //employee.setUpdateTime(LocalDateTime.now());
         Long id = (Long)request.getSession().getAttribute("employee");
-        employee.setCreateUser(id);
-        employee.setUpdateUser(id);
+        //employee.setCreateUser(id);
+        //employee.setUpdateUser(id);
         boolean save = employeeService.save(employee);
         return R.success("创建成功");
     }

@@ -6,6 +6,12 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 1. 实体类，需要实现Serializable接口
+ * 2. 公共字段填充
+ * a。 利用TableField方法 @TableField(fill=FieldFill.INSERT)
+ * b. 实现接口MetaObjectHandler
+ */
 @Data
 public class Employee implements Serializable {
 
@@ -26,9 +32,11 @@ public class Employee implements Serializable {
     private String idNumber; // 身份郑
 
     private Integer status;
-
+    @TableField(fill=FieldFill.INSERT)
     private LocalDateTime createTime;
 
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
     @TableField(fill = FieldFill.INSERT)
