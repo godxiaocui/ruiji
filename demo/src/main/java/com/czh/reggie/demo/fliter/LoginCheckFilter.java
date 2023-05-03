@@ -1,6 +1,7 @@
 package com.czh.reggie.demo.fliter;
 
 import com.alibaba.fastjson.JSON;
+import com.czh.reggie.demo.common.BaseContext;
 import com.czh.reggie.demo.common.R;
 import jdk.nashorn.internal.ir.CallNode;
 import lombok.extern.slf4j.Slf4j;
@@ -56,6 +57,10 @@ public class LoginCheckFilter implements Filter {
         // 4. 判断登陆状态，如果是已经登陆，直接放行
         if(null!=(request.getSession().getAttribute("employee"))){
             log.info("用户已经登陆",request.getSession().getAttribute("employee"));
+            // 获取登陆状态
+            Long id=(Long)request.getSession().getAttribute("employee");
+            //保存到线程
+            BaseContext.setCurrentId(id);
             filterChain.doFilter(request, response);
             return;
         }

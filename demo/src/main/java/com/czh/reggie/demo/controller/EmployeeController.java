@@ -2,6 +2,7 @@ package com.czh.reggie.demo.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.czh.reggie.demo.common.BaseContext;
 import com.czh.reggie.demo.common.R;
 import com.czh.reggie.demo.pojo.Employee;
 import com.czh.reggie.demo.service.EmployeeService;
@@ -87,13 +88,16 @@ public class EmployeeController {
      */
     @PostMapping
     public R<String> save(HttpServletRequest request,@RequestBody Employee employee){
-        log.info("Saving employee+{}",employee);
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+        log.info("Saving employee+{}",employee);
+
         //employee.setCreateTime(LocalDateTime.now());
         //employee.setUpdateTime(LocalDateTime.now());
         Long id = (Long)request.getSession().getAttribute("employee");
-        //employee.setCreateUser(id);
-        //employee.setUpdateUser(id);
+        //获取线程中的id
+        log.info("线程中的id{}",BaseContext.getCurrentId());
         boolean save = employeeService.save(employee);
         return R.success("创建成功");
     }
@@ -109,6 +113,7 @@ public class EmployeeController {
     @GetMapping("/page")
     public  R<Page> listEmployee(Integer page, Integer pageSize,String name){
         log.info("page+{}, pageSize+{},name+{}",page,pageSize,name);
+        log.info("线程中的id{}",BaseContext.getCurrentId());
         // 构造分页构造器
         Page pageInfo = new Page(page, pageSize);
         // 条件构造器
@@ -126,6 +131,8 @@ public class EmployeeController {
      */
     @PutMapping
     public R<String> update(HttpServletRequest request,@RequestBody Employee employee){
+        long sid = Thread.currentThread().getId();
+        log.info("当前线程是{}",sid);
         Long id=(Long)request.getSession().getAttribute("employee");
         employee.setUpdateTime(LocalDateTime.now());
         employee.setUpdateUser(id);

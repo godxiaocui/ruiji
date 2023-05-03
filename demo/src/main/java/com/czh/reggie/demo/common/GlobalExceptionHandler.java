@@ -34,4 +34,15 @@ public class GlobalExceptionHandler {
         }
         return R.error("为止错误");
     }
+
+    /**
+     * 捕获业务异常
+     */
+    @ExceptionHandler(CustomException.class)
+    public  R<String> exceptionHandler(CustomException ex){
+        log.error(ex.getMessage());
+
+
+        return R.error(ex.getMessage());
+    }
 }
