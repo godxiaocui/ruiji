@@ -3,7 +3,7 @@ package com.czh.reggie.demo.fliter;
 import com.alibaba.fastjson.JSON;
 import com.czh.reggie.demo.common.BaseContext;
 import com.czh.reggie.demo.common.R;
-import jdk.nashorn.internal.ir.CallNode;
+//import jdk.nashorn.internal.ir.CallNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 
@@ -42,7 +42,9 @@ public class LoginCheckFilter implements Filter {
         "/employee/login",
                 "/employee/logout",
                 "/backend/**",
-                "/front/**"
+                "/front/**",
+                "/demo/**",
+                "/common/**"
         };
         log.info("{}",urls);
         // 2. 判断本次请求是否需要处理
