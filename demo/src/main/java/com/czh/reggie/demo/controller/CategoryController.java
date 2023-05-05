@@ -12,6 +12,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 管理分类
  */
@@ -67,5 +69,19 @@ public class CategoryController {
     public R<String> update(@RequestBody Category category){
         categoryService.updateById(category);
         return R.success("修改成功");
+    }
+
+    /**
+     * 新增分类菜品
+     * 1. 传入一个实体参数的时候，会将前端的参数自动放入到实体参数的属性值中
+     */
+    @GetMapping("/list")
+    public R<List<Category>> list(Category category){
+        //条件构造器
+        LambdaQueryWrapper<Category> lambdaQueryWrapper=new LambdaQueryWrapper();
+        lambdaQueryWrapper.eq(category.getType()!=null,Category::getType,category.getType());
+        lambdaQueryWrapper.orderByDesc(Category::getSort);
+        List<Category> list = categoryService.list(lambdaQueryWrapper);
+        return R.success(list);
     }
 }
