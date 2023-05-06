@@ -58,5 +58,27 @@ public class DishServiceImpl extends ServiceImpl<DishDao, Dish> implements DishS
 
     }
 
+    @Override
+    @Transactional
+    public void updateDishFlavour(DishDto dto) {
+        // 跟新dish表基本信息.dto继承了dish
+        this.updateById(dto);
+
+        // 清理当前菜品对应口味数据-- delete
+        LambdaQueryWrapper<DishFlavor> dishLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        dishLambdaQueryWrapper.eq(DishFlavor::getDishId,dto.getId());
+        dishFlavorService.remove(dishLambdaQueryWrapper);
+        //插入提交的数据信息
+        List<DishFlavor> flavors = dto.getFlavors();
+        if (flavors!=null){
+            Long id = dto.getId();//菜品id
+            // 每个菜品口味增加id
+            flavors.forEach(flavor->flavor.setDishId(id));
+            // 讲一个集合进行保存
+            dishFlavorService.saveBatch(flavors);
+        }
+
+    }
+
 
 }

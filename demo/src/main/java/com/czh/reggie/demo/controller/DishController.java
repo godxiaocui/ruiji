@@ -100,4 +100,17 @@ public class DishController {
         return  R.success(byIdWithDishFlavour);
 
     }
+
+    /**
+     * 修改菜品
+     * @param dto
+     * @return
+     */
+
+    @PutMapping
+    public R<String>  update(@RequestBody  DishDto dto){
+        dishService.saveDishFlavour(dto);
+        return  R.success("新增菜品成功") ;
+    }
+
 }
