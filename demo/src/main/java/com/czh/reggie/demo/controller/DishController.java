@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.czh.reggie.demo.common.R.success;
+
 @RestController
 @RequestMapping("/dish")
 @Slf4j
@@ -38,7 +40,7 @@ public class DishController {
 @PostMapping
     public R<String>  save(@RequestBody  DishDto dto){
         dishService.saveDishFlavour(dto);
-        return  R.success("新增菜品成功") ;
+        return  success("新增菜品成功") ;
     }
 
     /**
@@ -86,7 +88,7 @@ public class DishController {
         }
         dishDtoPage.setRecords(results);
 
-        return  R.success(dishDtoPage);
+        return  success(dishDtoPage);
     }
 
     /**
@@ -97,7 +99,7 @@ public class DishController {
     @GetMapping("/{id}")
     public R<DishDto> get(@PathVariable Long id){
         DishDto byIdWithDishFlavour = dishService.getByIdWithDishFlavour(id);
-        return  R.success(byIdWithDishFlavour);
+        return  success(byIdWithDishFlavour);
 
     }
 
@@ -107,10 +109,11 @@ public class DishController {
      * @return
      */
 
+
     @PutMapping
-    public R<String>  update(@RequestBody  DishDto dto){
-        dishService.saveDishFlavour(dto);
-        return  R.success("新增菜品成功") ;
+    public R<String> update(@RequestBody DishDto dto){
+        dishService.updateDishFlavour(dto);
+        return R.success("修改菜品成功");
     }
 
 }
