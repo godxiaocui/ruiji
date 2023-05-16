@@ -14,4 +14,12 @@ public class DishDto extends Dish {
     private String categoryName;
 
     private Integer copies;
+
+    public DishDto(String categoryName, Integer copies) {
+        this.categoryName = categoryName;
+        this.copies = copies;
+    }
+
+    public DishDto() {
+    }
 }

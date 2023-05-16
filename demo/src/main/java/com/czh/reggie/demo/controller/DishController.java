@@ -88,7 +88,7 @@ public class DishController {
         }
         dishDtoPage.setRecords(results);
 
-        return  success(dishDtoPage);
+        return  R.success(dishDtoPage);
     }
 
     /**
@@ -115,5 +115,25 @@ public class DishController {
         dishService.updateDishFlavour(dto);
         return R.success("修改菜品成功");
     }
+
+    /**
+     *   http://localhost:8080/dish/list?categoryId=1413384954989060097
+     * @param dish
+     * @return
+     */
+    @GetMapping("/list")
+    public R<List<Dish>> list(Dish dish){
+        // categoryId 查询
+        LambdaQueryWrapper<Dish> dishLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        dishLambdaQueryWrapper.eq(dish.getCategoryId() != null,Dish::getCategoryId,dish.getCategoryId());
+        // 只要起售状态为1的
+        dishLambdaQueryWrapper.eq(Dish::getStatus,1);
+        // 排序
+        dishLambdaQueryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
+        List<Dish> list = dishService.list(dishLambdaQueryWrapper);
+
+        return  R.success(list);
+    }
+
 
 }

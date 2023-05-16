@@ -48,13 +48,17 @@ public class DishServiceImpl extends ServiceImpl<DishDao, Dish> implements DishS
     public DishDto getByIdWithDishFlavour(Long id) {
         Dish dish = this.getById(id);
         DishDto dishDto = new DishDto();
-        BeanUtils.copyProperties(dish,dishDto);
-        // 查询当前的值，同时在flavour中查询
-        LambdaQueryWrapper<DishFlavor> dishLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        dishLambdaQueryWrapper.eq(DishFlavor::getDishId,dish.getId());
-        List<DishFlavor> list = dishFlavorService.list(dishLambdaQueryWrapper);
-        dishDto.setFlavors(list);
-        return dishDto;
+        if (dish != null){
+            BeanUtils.copyProperties(dish,dishDto);
+            // 查询当前的值，同时在flavour中查询
+            LambdaQueryWrapper<DishFlavor> dishLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            dishLambdaQueryWrapper.eq(DishFlavor::getDishId,dish.getId());
+            List<DishFlavor> list = dishFlavorService.list(dishLambdaQueryWrapper);
+            dishDto.setFlavors(list);
+            return dishDto;
+        }
+
+        return null;
 
     }
 
