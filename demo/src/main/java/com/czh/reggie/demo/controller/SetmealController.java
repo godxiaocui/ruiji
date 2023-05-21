@@ -98,4 +98,17 @@ public class SetmealController {
         setmealService.startStatus(ids);
         return R.success("开启成功");
     }
+    /**
+     *
+     *
+     */
+    @GetMapping("/list")
+    public R<List<Setmeal>> list(Setmeal setmeal){
+        LambdaQueryWrapper<Setmeal> setmealLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        setmealLambdaQueryWrapper.eq(setmeal.getCategoryId()!=null,Setmeal::getCategoryId,setmeal.getCategoryId());
+        setmealLambdaQueryWrapper.eq(setmeal.getStatus()!=null,Setmeal::getStatus,setmeal.getStatus());
+        setmealLambdaQueryWrapper.orderByDesc(Setmeal::getUpdateTime);
+        List<Setmeal> list = setmealService.list(setmealLambdaQueryWrapper);
+        return R.success(list);
+    }
 }

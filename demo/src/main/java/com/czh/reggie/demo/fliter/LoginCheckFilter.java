@@ -44,7 +44,9 @@ public class LoginCheckFilter implements Filter {
                 "/backend/**",
                 "/front/**",
                 "/demo/**",
-                "/common/**"
+                "/common/**",
+                "/user/sendMsg",
+                "/user/login"
         };
         log.info("{}",urls);
         // 2. 判断本次请求是否需要处理
@@ -66,6 +68,17 @@ public class LoginCheckFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
+    // 用户登陆状态
+        if(null!=(request.getSession().getAttribute("user"))){
+            log.info("用户已经登陆",request.getSession().getAttribute("user"));
+            // 获取登陆状态
+            Long userid=(Long)request.getSession().getAttribute("user");
+            //保存到线程
+            BaseContext.setCurrentId(userid);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
 
         // 5. 如果没有登陆返回登录结果,通过输出流方式向客户端响应数据
         response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
